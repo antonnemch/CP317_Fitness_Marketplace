@@ -24,6 +24,6 @@ INSERT INTO products (name, price, image_url, tags) VALUES
 -- Password hashes here are placeholders
 
 INSERT INTO users (email, password_hash, role) VALUES
-('admin@example.com', 'hashed_admin_pw', 'admin'),
-('vendor@example.com', 'hashed_vendor_pw', 'vendor'),
-('customer@example.com', 'hashed_customer_pw', 'customer');
+('admin@example.com', 'pbkdf2:sha256:1000000$LJcClb5KSVS6Uy6P$3eab78fda605f9912a5df264ac4c56a18c762554d33ad32a4df281a4f2fa8d87', 'admin'),
+('vendor@example.com', 'pbkdf2:sha256:1000000$TbxT0H5cRomsg80P$b4261315f964f72f5f06e3097ee502d4a1c6d49026c12805a1ac5146c5b0d22e', 'vendor'),
+('customer@example.com', 'pbkdf2:sha256:1000000$J7QeHqGHrNeq0VSQ$3bea0e89cae99787e251882d2e49eb99971c3795d1d38d1cb99d93377f178d0a', 'customer');
