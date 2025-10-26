@@ -26,8 +26,19 @@ async function apiRequest(path, { method = "GET", body, headers } = {}) {
   return data;
 }
 
+// Product API calls
 export const getProducts = () => apiRequest("/products");
+
+// Auth API calls  
 export const registerUser = (payload) =>
   apiRequest("/register", { method: "POST", body: payload });
 export const loginUser = (payload) =>
   apiRequest("/login", { method: "POST", body: payload });
+
+// Product management API calls (for vendors)
+export const createProduct = (payload) =>
+  apiRequest("/products", { method: "POST", body: payload });
+export const updateProduct = (id, payload) =>
+  apiRequest(`/products/${id}`, { method: "PUT", body: payload });
+export const deleteProduct = (id) =>
+  apiRequest(`/products/${id}`, { method: "DELETE" });

@@ -6,8 +6,8 @@ def create_app():
     CORS(app) ### Enable CORS for all routes CHANGE IN PRODUCTION
 
     # Import and register blueprints
-    from backend.routes.auth import auth_bp
-    from backend.routes.products import products_bp
+    from .routes.auth import auth_bp
+    from .routes.products import products_bp
 
     app.register_blueprint(auth_bp, url_prefix="/api")
     app.register_blueprint(products_bp, url_prefix="/api")
