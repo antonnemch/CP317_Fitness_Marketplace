@@ -6,9 +6,16 @@ const Products = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
+    console.log('Products component: Starting fetch');
     api.get("/products") // this will call backend API
-      .then((res) => setProducts(res.data))
-      .catch(() => console.error("Failed to fetch products"));
+      .then((res) => {
+        console.log('Products component: Received response:', res);
+        // Extract the items array from the response
+        const items = res.data.items || [];
+        console.log('Products component: Setting products with items:', items);
+        setProducts(items);
+      })
+      .catch((err) => console.error("Failed to fetch products:", err));
   }, []);
 
   return (

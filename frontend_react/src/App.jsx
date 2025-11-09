@@ -22,56 +22,10 @@ const TabButton = ({ active, onClick, children }) => (
   </button>
 );
 
+import Products from './pages/Products';
+
 function ProductsView() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState("");
-
-  const loadProducts = () => {
-    setLoading(true);
-    getProducts()
-      .then((data) => {
-        setItems(data.items || []);
-        setErr("");
-      })
-      .catch((e) => setErr(e.message))
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
-  if (loading) return <p style={{ color: "#333", fontSize: "16px" }}>Loading products…</p>;
-  if (err) return <p style={{ color: "#d32f2f", fontSize: "16px", fontWeight: "bold" }}>Error: {err}</p>;
-  if (!items.length) return <p style={{ color: "#666", fontSize: "16px" }}>No products found.</p>;
-
-  return (
-    <div>
-      <h3 style={{ color: "#333", marginBottom: "20px", fontSize: "24px" }}>Available Products</h3>
-      <div style={{ display: "grid", gap: "15px", maxWidth: "600px" }}>
-        {items.map((p) => (
-          <div key={p.id} style={{ 
-            border: "2px solid #e0e0e0", 
-            padding: "15px", 
-            borderRadius: "8px", 
-            backgroundColor: "#fff",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
-          }}>
-            <h4 style={{ margin: "0 0 8px 0", color: "#333", fontSize: "18px" }}>{p.name}</h4>
-            <p style={{ 
-              margin: 0, 
-              fontSize: "20px", 
-              fontWeight: "bold", 
-              color: "#2e7d32" 
-            }}>
-              ${Number(p.price).toFixed(2)}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <Products />;
 }
 
 function RegisterView() {
@@ -295,7 +249,10 @@ function VendorManagement({ user, onProductsChange }) {
   const loadProducts = async () => {
     try {
       const data = await getProducts();
-      setProducts(data.items || []);
+      // getProducts now returns a normalized array, but keep backward compatibility
+      // in case it ever returns an object with `items`.
+      const items = Array.isArray(data) ? data : (data && data.items) ? data.items : [];
+      setProducts(items);
     } catch (e) {
       setMsg(`Error loading products: ${e.message}`);
     }

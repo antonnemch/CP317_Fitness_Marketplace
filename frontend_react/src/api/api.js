@@ -9,8 +9,18 @@ const api = axios.create({
 
 export const getProducts = async () => {
   try {
+    console.log('Fetching products...');
     const res = await api.get("/products"); // endpoint from backend
-    return res.data;
+    console.log('API Response:', res);
+    // Normalize response so callers always receive an array of products.
+    // Backend may return either an array or an object like { items: [...] }.
+    const data = res && res.data ? res.data : res;
+    console.log('Data after first normalization:', data);
+    let result = [];
+    if (Array.isArray(data)) result = data;
+    else if (data && Array.isArray(data.items)) result = data.items;
+    console.log('Final normalized result:', result);
+    return result;
   } catch (err) {
     console.error("Error fetching products:", err);
     return [];
