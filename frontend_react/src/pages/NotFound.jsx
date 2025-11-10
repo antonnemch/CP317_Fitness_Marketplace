@@ -1,25 +1,50 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
-const NotFound = () => (
-  <div style={{ textAlign: "center", marginTop: "3rem" }}>
-    <h1>404 - Page Not Found 😔</h1>
-    <Link to="/">Go back Home</Link>
-  </div>
-);
-
-export default NotFound;
-
 // import React from "react";
 // import { Link } from "react-router-dom";
 
 // const NotFound = () => (
-//   <div className="p-6">
-//     <h1 className="text-3xl font-bold mb-4">404 - Page Not Found</h1>
-//     <Link to="/" className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-//       Go Home
-//     </Link>
+//   <div style={{ textAlign: "center", marginTop: "3rem" }}>
+//     <h1>404 - Page Not Found 😔</h1>
+//     <Link to="/">Go back Home</Link>
 //   </div>
 // );
 
 // export default NotFound;
+
+// // import React from "react";
+// // import { Link } from "react-router-dom";
+
+// // const NotFound = () => (
+// //   <div className="p-6">
+// //     <h1 className="text-3xl font-bold mb-4">404 - Page Not Found</h1>
+// //     <Link to="/" className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+// //       Go Home
+// //     </Link>
+// //   </div>
+// // );
+
+// // export default NotFound;
+
+
+import React from "react";
+import { Link } from "react-router-dom";
+
+const NotFound = () => (
+    <div className="not-found-container">
+        <div className="not-found-content">
+            <h1 className="not-found-status">404</h1>
+            <h2 className="not-found-heading">Page Not Found 😔</h2>
+            
+            <p className="not-found-message">
+                It looks like the page you were looking for doesn't exist.
+            </p>
+            
+            <Link to="/" className="not-found-link">
+                <button className="primary-btn">
+                    Return to the Homepage 🏡
+                </button>
+            </Link>
+        </div>
+    </div>
+);
+
+export default NotFound;
