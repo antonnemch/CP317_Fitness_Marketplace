@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import api from "../api/api";
 
-const Products = () => {
+const Products = ({ onAddToCart }) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const Products = () => {
       .then((res) => {
         console.log('Products component: Received response:', res);
         // Extract the items array from the response
-        const items = res.data.items || [];
+        const items = res.data && res.data.items ? res.data.items : (Array.isArray(res.data) ? res.data : []);
         console.log('Products component: Setting products with items:', items);
         setProducts(items);
       })
@@ -23,7 +23,19 @@ const Products = () => {
       <h2>Our Products</h2>
       <div className="product-grid">
         {products.length > 0 ? (
-          products.map((p) => <ProductCard key={p.id} product={p} />)
+          products.map((p) => (
+            <ProductCard
+              key={p.id}
+              product={{
+                id: p.id,
+                name: p.name,
+                description: p.description || "",
+                price: p.price,
+                image: p.image || p.image_url || "",
+              }}
+              onAdd={onAddToCart}
+            />
+          ))
         ) : (
           <p>Loading products...</p>
         )}

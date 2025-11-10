@@ -23,9 +23,10 @@ const TabButton = ({ active, onClick, children }) => (
 );
 
 import Products from './pages/Products';
+import CartPage from './pages/Cart';
 
-function ProductsView() {
-  return <Products />;
+function ProductsView({ onAddToCart }) {
+  return <Products onAddToCart={onAddToCart} />;
 }
 
 function RegisterView() {
@@ -522,12 +523,57 @@ export default function App() {
   const [tab, setTab] = useState("products");
   const [user, setUser] = useState(null);
   const [productsKey, setProductsKey] = useState(0);
+  const [cart, setCart] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("cart") || "[]");
+    } catch (e) {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    } catch (e) {
+      // ignore
+    }
+  }, [cart]);
+
+  const addToCart = (product) => {
+    setCart((prev) => {
+      const existing = prev.find((p) => p.id === product.id);
+      if (existing) {
+        return prev.map((p) => (p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p));
+      }
+      return [...prev, { ...product, quantity: 1 }];
+    });
+  };
+
+  const removeFromCart = (productId) => {
+    setCart((prev) => {
+      const existing = prev.find((p) => p.id === productId);
+      if (!existing) return prev;
+      if (existing.quantity > 1) {
+        return prev.map((p) => (p.id === productId ? { ...p, quantity: p.quantity - 1 } : p));
+      }
+      return prev.filter((p) => p.id !== productId);
+    });
+  };
+
+  const clearCart = () => setCart([]);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
+    const onLogout = () => {
+      setUser(null);
+      setTab("products");
+      setProductsKey((prev) => prev + 1);
+    };
+    window.addEventListener("logout", onLogout);
+    return () => window.removeEventListener("logout", onLogout);
   }, []);
 
   const handleLogin = (userData) => {
@@ -566,6 +612,9 @@ export default function App() {
         boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
       }}>
         <h1 style={{ marginBottom: 0, color: "#333", fontSize: "28px" }}>Fitness Marketplace</h1>
+        <div style={{ marginLeft: 16, color: "#333", fontSize: 14 }}>
+          Cart: <strong>{cart.reduce((s, p) => s + (p.quantity || 0), 0)}</strong>
+        </div>
         {user && (
           <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
             <span style={{ color: "#666", fontSize: "14px" }}>
@@ -593,6 +642,9 @@ export default function App() {
         <TabButton active={tab === "products"} onClick={() => setTab("products")}>
           Products
         </TabButton>
+        <TabButton active={tab === "cart"} onClick={() => setTab("cart")}>
+          Cart
+        </TabButton>
         <TabButton active={tab === "register"} onClick={() => setTab("register")}>
           Register
         </TabButton>
@@ -606,7 +658,10 @@ export default function App() {
         )}
       </div>
 
-      {tab === "products" && <ProductsView key={productsKey} />}
+      {tab === "products" && <ProductsView key={productsKey} onAddToCart={addToCart} />}
+      {tab === "cart" && (
+        <CartPage cart={cart} onAdd={addToCart} onRemove={removeFromCart} onClear={clearCart} />
+      )}
       {tab === "register" && <RegisterView />}
       {tab === "login" && <LoginView onLogin={handleLogin} />}
       {tab === "manage" && user && user.role === "vendor" && (
