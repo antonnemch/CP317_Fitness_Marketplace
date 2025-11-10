@@ -1,4 +1,4 @@
-/* .product-card {
+.product-card {
   border: 1px solid #e2e2e2;
   border-radius: 12px;
   padding: 1rem;
@@ -27,76 +27,4 @@
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
-} */
-
-
-import React from "react";
-import { Link } from "react-router-dom";
-import "../index.css"; // Ensure general styles are imported
-
-const ProductCard = ({ product, onAddToCart, onToggleWishlist, onClickCard }) => {
-    
-    // Default values and formatting for display
-    const formattedPrice = `$${product.price.toFixed(2)}`;
-    const averageRating = product.avg_rating ? product.avg_rating.toFixed(1) : 'N/A';
-
-    return (
-        <div 
-            className="product-card" 
-            onClick={() => onClickCard && onClickCard(product.id)}
-            role="link" 
-            tabIndex={0} 
-            aria-label={`View details for ${product.name}`}
-        >
-            
-            <div className="card-header">
-                {/* 1. Wishlist Button (CR-2) */}
-                <button 
-                    className="wishlist-btn"
-                    onClick={(e) => {
-                        e.stopPropagation(); 
-                        onToggleWishlist && onToggleWishlist(product.id);
-                    }}
-                    aria-label={`Toggle wishlist for ${product.name}`}
-                >
-                    {/* Assume product.isWishlisted is available */}
-                    {product.isWishlisted ? '❤️' : '🤍'} 
-                </button>
-                <img 
-                    src={product.image_url || "/vite.svg"} 
-                    alt={product.name} 
-                />
-            </div>
-            
-            <div className="card-content">
-                <h3 className="product-title">{product.name}</h3>
-                <p className="product-description">{product.description || 'No description provided.'}</p>
-                
-                {/* 2. Reviews Display (VR-3) */}
-                <div className="product-ratings">
-                    <span role="img" aria-label="Star rating">⭐</span> 
-                    {averageRating} 
-                    <span className="review-count">({product.review_count || 0})</span>
-                </div>
-            </div>
-
-            <div className="card-actions">
-                <div className="price">{formattedPrice}</div>
-                
-                {/* 3. Add to Cart Button (VR-1 Stock Check) */}
-                <button 
-                    onClick={(e) => {
-                        e.stopPropagation(); 
-                        onAddToCart && onAddToCart(product.id);
-                    }}
-                    disabled={product.stock <= 0}
-                    className="primary-btn"
-                >
-                    {product.stock <= 0 ? "Out of Stock 🚫" : "Add to Cart 🛒"}
-                </button>
-            </div>
-        </div>
-    );
-};
-
-export default ProductCard;
+}

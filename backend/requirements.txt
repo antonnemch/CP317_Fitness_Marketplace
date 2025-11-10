@@ -4,4 +4,3 @@ flask-bcrypt
 sqlalchemy
 pytest
 Werkzeug
-sqlite3-utils
