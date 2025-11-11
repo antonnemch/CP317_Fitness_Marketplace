@@ -580,7 +580,7 @@ Product CRUD, Listing, Filtering (T7), and Reviews (VR-3).
 from flask import Blueprint, request, jsonify, g
 import sqlite3
 from ..db_utils import get_db, rows_to_dicts
-from ..security import vendor_required, login_required
+from ..secruity import vendor_required, login_required
 
 products_bp = Blueprint("products", __name__)
 

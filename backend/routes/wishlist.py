@@ -5,7 +5,7 @@ API routes for managing the user's wishlist (CR-2).
 """
 from flask import Blueprint, jsonify, g, request
 import sqlite3
-from ..security import login_required
+from ..secruity import login_required
 from ..db_utils import rows_to_dicts, get_db
 
 wishlist_bp = Blueprint("wishlist_bp", __name__)

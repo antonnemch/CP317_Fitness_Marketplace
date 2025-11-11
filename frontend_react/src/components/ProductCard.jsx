@@ -16,10 +16,9 @@
 // export default ProductCard;
 
 import React from "react";
-import { Link } from "react-router-dom";
 import "../index.css"; // Ensure general styles are imported
 
-const ProductCard = ({ product, onAddToCart, onToggleWishlist, onClickCard }) => {
+const ProductCard = ({ product, onAdd, onToggleWishlist, onClickCard }) => {
     
     // Default values and formatting for display
     const formattedPrice = `$${product.price.toFixed(2)}`;
@@ -48,7 +47,7 @@ const ProductCard = ({ product, onAddToCart, onToggleWishlist, onClickCard }) =>
                     {product.isWishlisted ? '❤️' : '🤍'} 
                 </button>
                 <img 
-                    src={product.image_url || "/vite.svg"} 
+                    src={product.image || product.image_url || "/vite.svg"} 
                     alt={product.name} 
                 />
             </div>
@@ -72,7 +71,8 @@ const ProductCard = ({ product, onAddToCart, onToggleWishlist, onClickCard }) =>
                 <button 
                     onClick={(e) => {
                         e.stopPropagation(); 
-                        onAddToCart && onAddToCart(product.id);
+                        // prefer onAdd, but support legacy onToggle name if provided
+                        if (onAdd) return onAdd(product);
                     }}
                     disabled={product.stock <= 0}
                     className="primary-btn"
