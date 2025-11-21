@@ -21,14 +21,14 @@ export default function ChatbotWidget({ chatOpen, setChatOpen }) {
 
   return (
     <>
-      {/* Floating open button */}
+ 
       {!chatOpen && (
         <button className="chatbot-button" onClick={() => setChatOpen(true)}>
           💬
         </button>
       )}
 
-      {/* Chat window */}
+
       {chatOpen && (
         <div className="chatbot-box">
           <div className="chat-header">

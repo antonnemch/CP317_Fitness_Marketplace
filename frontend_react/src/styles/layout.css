@@ -1,4 +1,4 @@
-/* NAV LINKS */
+
 .navbar-links {
   display: flex;
   gap: 1.2rem;
@@ -11,7 +11,7 @@
 }
 
 
-/* MOBILE MODE */
+
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;

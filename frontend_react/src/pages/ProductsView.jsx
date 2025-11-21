@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../api/api";
-import "../styles/products.css";   // NEW file
+import "../styles/products.css";   
 
 export default function ProductsView() {
   const [items, setItems] = useState([]);

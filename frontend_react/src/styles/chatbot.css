@@ -1,4 +1,4 @@
-/* Floating button */
+
 .chatbot-button {
   position: fixed;
   bottom: 22px;
@@ -20,7 +20,7 @@
   transform: scale(1.1);
 }
 
-/* Chat box */
+
 .chatbot-box {
   position: fixed;
   bottom: 100px;
@@ -42,7 +42,6 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* Header */
 .chat-header {
   padding: 14px;
   border-bottom: 1px solid var(--border);
@@ -61,7 +60,7 @@
   cursor: pointer;
 }
 
-/* Messages */
+
 .chat-body {
   flex: 1;
   overflow-y: auto;
@@ -87,7 +86,7 @@
   color: var(--text);
 }
 
-/* Predefined question buttons */
+
 .quick-questions button {
   width: 100%;
   padding: 10px;

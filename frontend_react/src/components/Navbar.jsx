@@ -5,7 +5,6 @@ export default function Navbar({ user, onTab, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(false);
 
-  // Load saved theme
   useEffect(() => {
     const saved = localStorage.getItem("theme");
     if (saved === "dark") {
@@ -38,7 +37,7 @@ export default function Navbar({ user, onTab, onLogout }) {
           Fitness Marketplace
         </h1>
 
-        {/* Desktop Links */}
+ 
         <div className="navbar-links">
           {link("Home", "home")}
           {link("Products", "products")}
@@ -58,13 +57,13 @@ export default function Navbar({ user, onTab, onLogout }) {
           </button>
         </div>
 
-        {/* Hamburger Icon */}
+   
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
           ☰
         </button>
       </nav>
 
-      {/* Mobile Dropdown */}
+     
       {menuOpen && (
         <div className="mobile-menu">
           {link("Home", "home")}

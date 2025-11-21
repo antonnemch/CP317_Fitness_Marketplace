@@ -25,7 +25,7 @@
   color: var(--text-secondary);
 }
 
-/* BUTTON */
+
 .home-btn {
   padding: 12px 24px;
   border-radius: 10px;
@@ -40,7 +40,7 @@
   background: var(--primary-hover);
 }
 
-/* DARK MODE TEXT OVERRIDE */
+
 body.dark .home-hero {
   color: #e8e3ff;
 }
