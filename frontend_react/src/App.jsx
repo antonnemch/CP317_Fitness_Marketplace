@@ -5,7 +5,7 @@ import "./styles/layout.css";
 
 import Navbar from "./components/Navbar";
 import PageContainer from "./components/PageContainer";
-import ProductsView from "./pages/ProductsView";
+import Products from "./pages/Products";
 import RegisterView from "./pages/RegisterView";
 import LoginView from "./pages/LoginView";
 import VendorManagement from "./pages/VendorManagement";
@@ -62,7 +62,7 @@ export default function App() {
 
       <PageContainer>
         {tab === "home" && <Home onTab={setTab} />}
-        {tab === "products" && <ProductsView key={productsKey} />}
+        {tab === "products" && <Products key={productsKey} />}
         {tab === "register" && <RegisterView />}
         {tab === "login" && <LoginView onLogin={handleLogin} />}
         {tab === "manage" && user?.role === "vendor" && (
