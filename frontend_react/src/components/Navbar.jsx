@@ -1,3 +1,5 @@
+// frontend_react/src/components/Navbar.jsx
+
 import React, { useState, useEffect } from "react";
 import "../styles/components.css";
 
@@ -37,10 +39,16 @@ export default function Navbar({ user, onTab, onLogout }) {
           Fitness Marketplace
         </h1>
 
- 
         <div className="navbar-links">
           {link("Home", "home")}
           {link("Products", "products")}
+
+          {/* NEW: cart is always available */}
+          {link("Cart", "cart")}
+
+          {/* NEW: orders only when logged in */}
+          {user && link("My Orders", "orders")}
+
           {link("Register", "register")}
           {link("Login", "login")}
 
@@ -57,17 +65,20 @@ export default function Navbar({ user, onTab, onLogout }) {
           </button>
         </div>
 
-   
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
           ☰
         </button>
       </nav>
 
-     
       {menuOpen && (
         <div className="mobile-menu">
           {link("Home", "home")}
           {link("Products", "products")}
+
+          {/* NEW: cart + orders in mobile menu too */}
+          {link("Cart", "cart")}
+          {user && link("My Orders", "orders")}
+
           {link("Register", "register")}
           {link("Login", "login")}
 

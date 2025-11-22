@@ -1,5 +1,52 @@
 import axios from "axios";
 
+// At top of api.js if not already defined:
+const API_BASE =
+  import.meta.env.VITE_API_BASE || "http://127.0.0.1:5000/api";
+
+async function handleJsonResponse(res) {
+  if (!res.ok) {
+    let message = `Request failed with status ${res.status}`;
+    try {
+      const data = await res.json();
+      if (data && data.error) {
+        message = data.error;
+      }
+    } catch (_) {
+      // ignore JSON parse errors
+    }
+    throw new Error(message);
+  }
+  return res.json();
+}
+
+// ---------------------------------------------
+// Vendor dashboard API
+// ---------------------------------------------
+export async function fetchVendorOverview() {
+  const res = await fetch(`${API_BASE}/vendor/overview`);
+  return handleJsonResponse(res);
+}
+
+export async function vendorCreateProduct(payload) {
+  const res = await fetch(`${API_BASE}/vendor/products`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  return handleJsonResponse(res);
+}
+
+export async function vendorUpdateProduct(productId, payload) {
+  const res = await fetch(`${API_BASE}/vendor/products/${productId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  return handleJsonResponse(res);
+}
+
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://127.0.0.1:5000/api",
   withCredentials: false,
@@ -53,5 +100,20 @@ export const deleteProduct = async (id) => {
   const res = await api.delete(`/products/${id}`);
   return res.data;
 };
+
+// ---------------- ORDERS / CHECKOUT ---------------- //
+
+export const createOrder = async (items) => {
+  // items: [{ product_id, quantity }]
+  const res = await api.post("/orders", { items });
+  return res.data.order; // shape from backend {"order": {...}}
+};
+
+export const getOrders = async () => {
+  const res = await api.get("/orders");
+  return res.data.items || [];  // list of orders
+};
+
+
 
 export default api;

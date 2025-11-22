@@ -68,16 +68,58 @@ CREATE TABLE IF NOT EXISTS stock_notifications (
     FOREIGN KEY(vendor_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Seed sample users
--- Password hashes: admin123, vendor123, customer123 (generated with werkzeug)
-INSERT OR IGNORE INTO users (id, email, password_hash, role, status) VALUES
-(1, 'admin@example.com', 'pbkdf2:sha256:1000000$LJcClb5KSVS6Uy6P$3eab78fda605f9912a5df264ac4c56a18c762554d33ad32a4df281a4f2fa8d87', 'admin', 'active'),
-(2, 'vendor@example.com', 'pbkdf2:sha256:1000000$TbxT0H5cRomsg80P$b4261315f964f72f5f06e3097ee502d4a1c6d49026c12805a1ac5146c5b0d22e', 'vendor', 'active'),
-(3, 'customer@example.com', 'pbkdf2:sha256:1000000$J7QeHqGHrNeq0VSQ$3bea0e89cae99787e251882d2e49eb99971c3795d1d38d1cb99d93377f178d0a', 'customer', 'active');
+-- Orders placed by customers
+CREATE TABLE IF NOT EXISTS orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    customer_id INTEGER NOT NULL,
+    status TEXT NOT NULL DEFAULT 'PLACED',       -- PLACED, SHIPPED, DELIVERED, CANCELLED
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (customer_id) REFERENCES users(id)
+);
 
--- Seed starter products (vendor_id=2 is the test vendor)
-INSERT OR IGNORE INTO products (id, name, price, description, category, stock, vendor_id, is_active) VALUES
-(1, 'Resistance Band Set', 24.99, 'Premium elastic resistance bands for strength training', 'equipment', 50, 2, 1),
-(2, 'Protein Powder (1kg)', 39.99, 'Whey protein powder for muscle recovery', 'supplement', 30, 2, 1),
-(3, 'Yoga Mat', 19.99, 'Non-slip yoga mat for pilates and stretching', 'equipment', 25, 2, 1),
-(4, 'Creatine Monohydrate', 29.99, 'Pure creatine supplement for performance', 'supplement', 40, 2, 1);
+-- Line items per order
+CREATE TABLE IF NOT EXISTS order_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    price_at_purchase REAL NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+
+-- Extra sample products for a more realistic catalog
+INSERT INTO products (name, description, price, category, stock, low_stock_threshold, vendor_id, is_active)
+VALUES
+    -- Equipment
+    ('Adjustable Dumbbell Set', 'Pair of adjustable dumbbells (2–24kg) with quick dial system.', 199.99, 'equipment', 12, 3, 2, 1),
+    ('Kettlebell 16kg', 'Cast iron kettlebell with powder-coated grip.', 59.99, 'equipment', 20, 5, 2, 1),
+    ('Pull-Up Bar', 'Doorway pull-up bar with multiple grip positions.', 39.99, 'equipment', 18, 4, 3, 1),
+    ('Foam Roller', 'High-density foam roller for recovery and mobility.', 24.99, 'equipment', 30, 5, 3, 1),
+
+    -- Apparel
+    ('Compression Shirt', 'Moisture-wicking compression shirt, unisex sizing.', 34.99, 'apparel', 40, 8, 2, 1),
+    ('Training Shorts', 'Lightweight training shorts with zip pockets.', 29.99, 'apparel', 35, 7, 2, 1),
+    ('Gym Hoodie', 'Fleece-lined hoodie with minimalist branding.', 49.99, 'apparel', 25, 5, 3, 1),
+
+    -- Supplements
+    ('BCAA Powder', 'Branched-chain amino acids, citrus flavour, 300 g.', 26.99, 'supplement', 22, 5, 2, 1),
+    ('Pre-Workout Formula', 'Caffeine and beta-alanine blend for energy and focus.', 39.49, 'supplement', 18, 4, 3, 1),
+    ('Multivitamin Capsules', 'Daily multivitamin for active adults.', 21.99, 'supplement', 50, 10, 3, 1),
+
+    -- Accessories
+    ('Lifting Straps', 'Padded lifting straps to improve grip on heavy pulls.', 14.99, 'accessory', 40, 10, 2, 1),
+    ('Weightlifting Belt', '4-inch leather belt for heavy squats and deadlifts.', 69.99, 'accessory', 10, 2, 3, 1),
+    ('Shaker Bottle 700ml', 'Leak-proof shaker bottle with mixing ball.', 12.99, 'accessory', 60, 12, 2, 1),
+    ('Workout Logbook', 'A5 training logbook with 12-week program layout.', 9.99, 'accessory', 80, 15, 3, 1)
+ON CONFLICT DO NOTHING;
+
+
+-- Demo users for Sprint 3
+INSERT INTO users (id, name, email, password_hash, role, created_at)
+VALUES
+    (1, 'Demo Customer', 'demo@fitness.local', 'dummy-hash', 'customer', datetime('now')),
+    (2, 'Demo Vendor',   'vendor@fitness.local', 'dummy-hash', 'vendor',   datetime('now'))
+ON CONFLICT(id) DO NOTHING;

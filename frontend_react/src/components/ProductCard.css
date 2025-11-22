@@ -28,3 +28,17 @@
   border-radius: 6px;
   cursor: pointer;
 }
+.product-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-cart-pill {
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  background: #e5f3ff;
+  color: #2662d9;
+  border: 1px solid #c6e0ff;
+}
