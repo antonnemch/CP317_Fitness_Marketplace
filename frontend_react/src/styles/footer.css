@@ -1,0 +1,47 @@
+@import "./themes.css";
+
+.footer {
+  width: 100%;
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+
+  background: var(--footer-bg);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-icons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.footer-icon {
+  font-size: 1.7rem;
+  opacity: 0.9;
+  transition: 0.25s;
+  text-decoration: none;
+}
+
+.footer-icon:hover {
+  opacity: 1;
+  transform: translateY(-3px);
+}
+
+.footer-text {
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+
+body.dark .footer-icon {
+  color: rgba(255, 255, 255, 0.9); 
+}
+
+body:not(.dark) .footer-icon {
+  color: #3f51b5; 
+}

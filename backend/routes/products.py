@@ -13,7 +13,7 @@ Later sprints will add vendor-only create/update/delete routes.
 """
 
 from flask import Blueprint, jsonify, request
-from ..db_utils import get_db, rows_to_dicts
+from ..db_utils import get_db, rows_to_dictsS
 
 # Create the blueprint that groups all product routes
 products_bp = Blueprint("products_bp", __name__)
